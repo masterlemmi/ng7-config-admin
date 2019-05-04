@@ -1,0 +1,30 @@
+﻿  
+
+      <div class="col-lg-10 text-center" style="float:none; margin: 0 auto">
+  <div class="card" >
+<div class="card-body">
+            <h5 class="card-title">Encryption/Decryption Tool</h5>
+            <p class="card-text"></p>
+          </div>
+
+
+        <form  style="margin: 2rem 4rem"  [formGroup]="form" >
+             <div class="form-group">
+                <input required class="form-control" formControlName="configInput" style="text-align: center;">
+            
+             </div>
+  
+            <div class="row" >
+                <div class="col-lg-6">
+            <button class="btn btn-primary btn-block" (click)="encrypt()" [disabled]="!form.valid"> 
+              <i class="fas fa-lock"></i> Encrypt </button>                    
+                </div>
+               <div class="col-lg-6">
+            <button class="btn btn-primary btn-block" (click)="decrypt()" [disabled]="!form.valid"><i class="fas fa-unlock"></i>  Decrypt </button>                    
+                </div>
+            </div>
+
+       <pre *ngIf="configValue" style="background-color: #f7f7f9; margin-top: 2rem; padding: 1rem; position: relative;"> {{configValue}} </pre>
+        </form>
+        </div>
+    </div>
