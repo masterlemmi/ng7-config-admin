@@ -13,13 +13,11 @@ export class AppComponent {
         private authenticationService: AuthenticationService
     ) {
         this.authenticationService.currentUser.subscribe(x => {
-            console.log("User", x)
             this.currentUser = x;
         });
     }
 
     logout() {
-        this.authenticationService.logout();
-        this.router.navigate(['/login']);
+        this.authenticationService.logoutWithCallback( ()=> this.router.navigate(['/login']) );
     }
 }

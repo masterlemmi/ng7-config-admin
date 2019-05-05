@@ -25,10 +25,7 @@ export class LoginComponent implements OnInit {
         }
     }
 
-    test(){
-        this.router.navigateByUrl('/');
-    }
-
+    
     ngOnInit() {
         this.loginForm = this.formBuilder.group({
             username: ['', Validators.required],
@@ -55,17 +52,12 @@ export class LoginComponent implements OnInit {
           this.authenticationService.login(this.f.username.value, this.f.password.value)
              .subscribe(
                 data => {
-                     console.log("Login Data", data);
-                     console.log("Getting user");
-
-                     this.authenticationService.getUser().subscribe( res=>{
-                         console.log("RESPONSE GEUSER", res)
-                        this.router.navigateByUrl('/');
-                     });
-                },
+                     this.authenticationService.getUser().subscribe(res=>{
+                        this.router.navigateByUrl("/");  
+                     })
+                                 },
                 error => {
-                    console.log("EROR received from login", error);
-                    this.alertService.error(error);
+                    this.alertService.error(error.error.message ? error.error.message : 'Server Error' );
                     this.loading = false;
                 });
     }
