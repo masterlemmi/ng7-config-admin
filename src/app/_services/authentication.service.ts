@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 
 import { environment } from '@environments/environment';
 import { User } from '@app/_models';
+import { SettingsService } from './settings.service'
 
 const httpOptions = {
   headers: new HttpHeaders({'Content-Type':  'application/x-www-form-urlencoded', 'Accept': 'application/json' }),
@@ -16,7 +17,7 @@ export class AuthenticationService {
     private currentUserSubject: BehaviorSubject<User>;
     public currentUser: Observable<User>;
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient, private settingsSvc: SettingsService) {
         this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
         this.currentUser = this.currentUserSubject.asObservable();
     }
@@ -24,6 +25,12 @@ export class AuthenticationService {
     public get currentUserValue(): User {
         return this.currentUserSubject.value;
     }
+
+    test(){
+        
+    }
+
+    get apiUrl() {return this.settingsSvc.settings.apiUrl}
 
     getUser(){
         return this.http.get<any>(`${environment.apiUrl}/user`, {withCredentials: true})
@@ -43,9 +50,10 @@ export class AuthenticationService {
 
 
     login(username: string, password: string) {
+        console.log("apiurl is ", this.apiUrl)
 
         const body = new HttpParams().set('username', username).set('password', password);
-        return this.http.post(`${environment.apiUrl}/login`, body.toString(), httpOptions);
+        return this.http.post(`${this.apiUrl}/login`, body.toString(), httpOptions);
     }
 
 

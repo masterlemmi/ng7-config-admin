@@ -1,4 +1,4 @@
-﻿import { NgModule }      from '@angular/core';
+﻿import { NgModule , APP_INITIALIZER}      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule }    from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -12,7 +12,12 @@ import { AlertComponent } from './_components';
 import { JwtInterceptor, ErrorInterceptor } from './_helpers';
 import { LoginComponent } from './login';
 import { HomeComponent } from './home';
+import { SettingsHttpService } from '@app/_services'
 
+
+export function app_Init(settingsHttpService: SettingsHttpService) {
+  return () => settingsHttpService.initializeApp();
+}
 
 @NgModule({
     imports: [
@@ -27,6 +32,7 @@ import { HomeComponent } from './home';
         AlertComponent,
         LoginComponent],
     providers: [
+        { provide: APP_INITIALIZER, useFactory: app_Init, deps: [SettingsHttpService], multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
 
